@@ -1,5 +1,6 @@
 #include "Type.h"
 #include "InterpreterException.h"
+#include "NameErrorException.h"
 #include "Parser.h"
 #include <iostream>
 
@@ -9,24 +10,32 @@
 
 int main(int argc,char **argv)
 {
-	std::cout << WELCOME << YOUR_NAME << std::endl;
-
-	std::string input_string;
-
-	// get new command from user
-	std::cout << ">>> ";
-	std::getline(std::cin, input_string);
-	
-	while (input_string != "quit()")
+	try
 	{
-		// parsing command
-		Parser::parseString(input_string);
+		std::cout << WELCOME << YOUR_NAME << std::endl;
 
+		std::string input_string;
 
 		// get new command from user
 		std::cout << ">>> ";
 		std::getline(std::cin, input_string);
+
+		while (input_string != "quit()")
+		{
+			// parsing command
+			Parser::parseString(input_string);
+
+
+			// get new command from user
+			std::cout << ">>> ";
+			std::getline(std::cin, input_string);
+		}
+
+		return 0;
+	}
+	catch (NameErrorException& exception)
+	{
+		std::cout << exception.what();
 	}
 
-	return 0;
 }
